@@ -59,32 +59,40 @@ RUN \
 
 RUN \
     set -ex; \
-    echo "Installing docker-compose" \
+    echo "Installing utilities" \
     ; \
-    export CRYPTOGRAPHY_DONT_BUILD_RUST=1; \
     if [ -f /etc/alpine-release ] ; then \
-        apk add --no-cache python3 py3-pip \
-        \
-        && apk add --no-cache --virtual .build-deps \
-            python3-dev libffi-dev openssl-dev gcc libc-dev make \
-        && pip3 install --upgrade --no-cache-dir pip wheel \
-        && pip3 install --upgrade --no-cache-dir docker-compose \
-        && apk del .build-deps \
-        ; \
-    elif [ -f /etc/debian_version ] ; then \
-        buildDeps="python3-dev libffi-dev gcc make" \
-        && apt-get update \
-        && apt-get install -y --no-install-recommends python3 python3-pip python3-setuptools \
-        \
-        && apt-get install -y --no-install-recommends $buildDeps \
-        && pip3 install --upgrade --no-cache-dir pip wheel \
-        && pip3 install --upgrade --no-cache-dir docker-compose \
-        && apt-get purge -y --auto-remove \
-                  -o APT::AutoRemove::RecommendsImportant=false \
-                  $buildDeps \
-        && rm -rf /var/lib/apt/lists/* \
-        ; \
+        apk add --no-cache make
     fi
+
+# RUN \
+#     set -ex; \
+#     echo "Installing docker-compose" \
+#     ; \
+#     export CRYPTOGRAPHY_DONT_BUILD_RUST=1; \
+#     if [ -f /etc/alpine-release ] ; then \
+#         apk add --no-cache python3 py3-pip \
+#         \
+#         && apk add --no-cache --virtual .build-deps \
+#             python3-dev libffi-dev openssl-dev gcc libc-dev make \
+#         && pip3 install --upgrade --no-cache-dir pip wheel \
+#         && pip3 install --upgrade --no-cache-dir docker-compose \
+#         && apk del .build-deps \
+#         ; \
+#     elif [ -f /etc/debian_version ] ; then \
+#         buildDeps="python3-dev libffi-dev gcc make" \
+#         && apt-get update \
+#         && apt-get install -y --no-install-recommends python3 python3-pip python3-setuptools \
+#         \
+#         && apt-get install -y --no-install-recommends $buildDeps \
+#         && pip3 install --upgrade --no-cache-dir pip wheel \
+#         && pip3 install --upgrade --no-cache-dir docker-compose \
+#         && apt-get purge -y --auto-remove \
+#                   -o APT::AutoRemove::RecommendsImportant=false \
+#                   $buildDeps \
+#         && rm -rf /var/lib/apt/lists/* \
+#         ; \
+#     fi
 
 COPY entrypoint.sh /entrypoint.sh
 
