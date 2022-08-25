@@ -62,7 +62,7 @@ RUN \
     echo "Installing utilities" \
     ; \
     if [ -f /etc/alpine-release ] ; then \
-        apk add --no-cache make \
+        apk add --no-cache make socat \
         ; \
     fi
 

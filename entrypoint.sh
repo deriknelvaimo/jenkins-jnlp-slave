@@ -39,10 +39,15 @@ if [ "$(id -u)" == "0" ]; then
     done
 fi
 
-eval $(ssh-agent) > /dev/null
-ssh-add /root/.ssh/id_rsa || true
-chown -R root:jenkins $(dirname $SSH_AUTH_SOCK) && chmod 750 $(dirname $SSH_AUTH_SOCK) && chmod 640 $(readlink -f $SSH_AUTH_SOCK)
-# jenkins agent clears env variables
-echo -n "$SSH_AUTH_SOCK" > /tmp/SSH_AUTH_SOCK_LOCATION
+if [ -f "/root/.ssh/id_rsa" ]; then
+    echo "Starting ssh agent forwaring with supplied key"
+    eval $(ssh-agent -s)
+
+    # We cannot just chown/chmod the socket due to uid check in openssh ssh-agent.c
+    # https://github.com/openssh/openssh-portable/blob/V_7_5_P1/ssh-agent.c#L1101
+    socat UNIX-LISTEN:/var/run/ssh-agent.sock,umask=077,user=jenkins,fork "UNIX:$SSH_AUTH_SOCK" &
+    export SSH_AUTH_SOCK=/run/ssh-agent.sock
+fi
+
 
 exec gosu jenkins "jenkins-slave" "$@"
