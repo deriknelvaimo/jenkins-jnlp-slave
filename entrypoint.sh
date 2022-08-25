@@ -51,4 +51,4 @@ if [ -f "/root/.ssh/id_rsa" ]; then
 fi
 
 
-exec gosu jenkins "jenkins-slave" "$@"
+exec su-exec jenkins "jenkins-slave" "$@"
