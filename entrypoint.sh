@@ -39,4 +39,10 @@ if [ "$(id -u)" == "0" ]; then
     done
 fi
 
+eval $(ssh-agent) > /dev/null
+ssh-add /root/.ssh/id_rsa || true
+chown -R root:jenkins $(dirname $SSH_AUTH_SOCK) && chmod 750 $(dirname $SSH_AUTH_SOCK) && chmod 640 $(readlink -f $SSH_AUTH_SOCK)
+# jenkins agent clears env variables
+echo -n "$SSH_AUTH_SOCK" > /tmp/SSH_AUTH_SOCK_LOCATION
+
 exec gosu jenkins "jenkins-slave" "$@"
