@@ -42,6 +42,7 @@ fi
 if [ -f "/root/.ssh/id_rsa" ]; then
     echo "Starting ssh agent forwaring with supplied key"
     eval $(ssh-agent -s)
+    ssh-add /root/.ssh/id_rsa
 
     # We cannot just chown/chmod the socket due to uid check in openssh ssh-agent.c
     # https://github.com/openssh/openssh-portable/blob/V_7_5_P1/ssh-agent.c#L1101
