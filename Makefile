@@ -2,7 +2,7 @@
 UPSTREAM_VERSION_FILE = UPSTREAM_VERSION.txt
 UPSTREAM_VERSION = `cat $(UPSTREAM_VERSION_FILE)`
 DEFAULT_BUILD_ARGS = --build-arg http_proxy=$(http_proxy) --build-arg https_proxy=$(https_proxy) --build-arg no_proxy=$(no_proxy)
-REGISTRY = registry.vaimo-sa-cloud.co.za
+REGISTRY = core.harbor.vaimo-sa-cloud.co.za/library
 default: build-alpine
 
 build:

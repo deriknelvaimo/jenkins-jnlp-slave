@@ -5,6 +5,7 @@ FROM jenkins/inbound-agent:${FROM_TAG}
 ARG DOCKER_CHANNEL=stable
 ARG DOCKER_VERSION=20.10.8
 ARG TINY_VERSION=0.18.0
+ARG JX_RELEASE_VERSION=2.6.0
 
 USER root
 ENV LANG=en_US.UTF-8
@@ -38,7 +39,10 @@ RUN set -ex; \
     if [ -f /etc/alpine-release ] ; then \
         apk add --no-cache make socat su-exec \
         ; \
-    fi
+    fi; \
+    \
+    curl -L https://github.com/jenkins-x-plugins/jx-release-version/releases/download/v${JX_RELEASE_VERSION}/jx-release-version-linux-amd64.tar.gz | tar xzv && \
+    mv jx-release-version /usr/local/bin
 
 COPY entrypoint.sh /entrypoint.sh
 

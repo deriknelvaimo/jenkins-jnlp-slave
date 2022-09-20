@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -o pipefail
 
-: "${REGISTRY:=registry.vaimo-sa-cloud.co.za}"
+: "${REGISTRY:=core.harbor.vaimo-sa-cloud.co.za/library}"
 
 if [[ -n $GIT_TAG ]]; then
     TAG=${GIT_TAG/v/}
